@@ -23,8 +23,9 @@ def start_scrapping(url) -> None:
                      })
     content = div.contents
 
-    for i in content[0]:
-        print(f'{i.text}')
+    for i in content:
+        i = i.get_text(strip=False)
+        print(f'{i}')
 
 
 if __name__ == '__main__': # бест-практис... ю ноу?
