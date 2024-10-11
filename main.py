@@ -1,6 +1,5 @@
 # основные импорты
 import requests
-import lxml
 from bs4 import BeautifulSoup
 
 st_accept = "text/html"
@@ -18,14 +17,13 @@ def start_scrapping(url) -> None:
     src = req.text
     
     soup = BeautifulSoup(src, 'lxml') # достали последние игры
-    div = soup.find('div',
+    games = soup.find('div',
                     {'class':'r-table r-only-mobile-5 performances-overview',
-                     })
-    content = div.contents
+                     }).descendants
 
-    for i in content:
-        i = i.get_text(strip=False)
-        print(f'{i}')
+    for i in games:
+        all_statics = i.text
+        print(f'{all_statics}')
 
 
 if __name__ == '__main__': # бест-практис... ю ноу?
