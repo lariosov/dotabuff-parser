@@ -18,7 +18,8 @@ def start_scrapping(url) -> None:
     soup = BeautifulSoup(req.text, 'lxml') # достали последние игры
     games = soup.find('div', 
                       class_='performances-overview')
-
+    
+    clear_stats = {}
 
     for stats in games:
         hero = stats.find('div', class_='r-fluid').find('a').find('img').get('alt')
@@ -30,14 +31,13 @@ def start_scrapping(url) -> None:
                                                                            class_='r-body').find('div',
                                                                                                  class_='subtext').text
     
-        clear_stats = {
-            'hero': hero,
+        clear_stats[hero] = {
             'kda': kda,
             'game_mode': game_mode,
             'lvl': lvl,
             'match_result': match_result
         }
-    
+        
     return clear_stats
 
 
