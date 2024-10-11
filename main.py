@@ -13,17 +13,19 @@ headers = {
 
 def start_scrapping(url) -> None:
     req = requests.get(url, headers=headers)
-    # считываем текст HTML-документа
-    src = req.text
-    
-    soup = BeautifulSoup(src, 'lxml') # достали последние игры
-    games = soup.find('div',
-                    {'class':'r-table r-only-mobile-5 performances-overview',
-                     }).descendants
 
-    for i in games:
-        all_statics = i.text
-        print(f'{all_statics}')
+    # считываем текст HTML-документа
+    soup = BeautifulSoup(req.text, 'lxml') # достали последние игры
+    games = soup.find('div', 
+                      class_='performances-overview')
+
+    for stats in games:
+        hero = stats.find('div', class_='r-fluid').find('a').find('img').get('alt')
+        kda = stats.find('span', class_='kda-record').text
+        lvl = stats.find('div', class_='tw-rounded-tl-sm').text
+        match_result = stats.find('div', class_='r-match-result').find('a', class_=['won', 'lost']).text
+        
+        print(hero, kda, lvl, match_result)
 
 
 if __name__ == '__main__': # бест-практис... ю ноу?
