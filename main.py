@@ -19,15 +19,28 @@ def start_scrapping(url) -> None:
     games = soup.find('div', 
                       class_='performances-overview')
 
+
     for stats in games:
         hero = stats.find('div', class_='r-fluid').find('a').find('img').get('alt')
         kda = stats.find('span', class_='kda-record').text
         lvl = stats.find('div', class_='tw-rounded-tl-sm').text
         match_result = stats.find('div', class_='r-match-result').find('a', class_=['won', 'lost']).text
-        
-        print(hero, kda, lvl, match_result)
+        game_mode = stats.find('div', 
+                          class_='r-fluid r-175 r-text-only r-first').find('div', 
+                                                                           class_='r-body').find('div',
+                                                                                                 class_='subtext').text
+    
+        clear_stats = {
+            'hero': hero,
+            'kda': kda,
+            'game_mode': game_mode,
+            'lvl': lvl,
+            'match_result': match_result
+        }
+    
+    return clear_stats
 
 
 if __name__ == '__main__': # бест-практис... ю ноу?
     url = 'https://ru.dotabuff.com/players/249237243'
-    start_scrapping(url=url)
+    print(start_scrapping(url=url))
