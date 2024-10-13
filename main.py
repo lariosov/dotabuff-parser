@@ -30,8 +30,12 @@ def start_scrapping(url) -> None:
                           class_='r-fluid r-175 r-text-only r-first').find('div', 
                                                                            class_='r-body').find('div',
                                                                                                  class_='subtext').text
+        game_link = stats.find('div', 
+                          class_='r-match-result').find('a',
+                                                        class_=['won', 'lost']).get('href')
     
-        clear_stats[hero] = {
+        clear_stats[game_link] = {
+            'hero': hero,
             'kda': kda,
             'game_mode': game_mode,
             'lvl': lvl,
