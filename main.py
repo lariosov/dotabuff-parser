@@ -28,7 +28,7 @@ def start_scrapping(url) -> None:
             .text
         )
         game_mode = (
-            stats.find("div", class_="r-fluid r-175 r-text-only r-first")
+            stats.find("div", class_="r-first")
             .find("div", class_="r-body")
             .find("div", class_="subtext")
             .text
@@ -51,6 +51,8 @@ def start_scrapping(url) -> None:
             .get("title")
         )
 
+        duration = stats.find("div", class_="r-duration").find("div", "r-body").text
+
         clear_stats[game_link] = {
             "hero": hero,
             "kda": kda,
@@ -61,6 +63,7 @@ def start_scrapping(url) -> None:
             "avg_rate": avg_rate,
             "role": role,
             "lane": lane,
+            "duration": duration,
         }
 
     return clear_stats
