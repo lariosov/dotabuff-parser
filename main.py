@@ -35,6 +35,14 @@ def start_scrapping(url) -> None:
                                                         class_=['won', 'lost']).get('href')
         date = stats.find('div',
                           class_='r-match-result').find('time').text
+        avg_rate = stats.find('div',
+                              class_='subtext').text
+        role = stats.find('span',
+                          class_='subtext icons').find('i',
+                                                        'role-icon').get('title')
+        lane = stats.find('span',
+                          class_='subtext icons').find('i',
+                                                        'lane-icon').get('title')
     
         clear_stats[game_link] = {
             'hero': hero,
@@ -42,7 +50,10 @@ def start_scrapping(url) -> None:
             'game_mode': game_mode,
             'lvl': lvl,
             'match_result': match_result,
-            'date': date
+            'date': date,
+            'avg_rate': avg_rate,
+            'role': role,
+            'lane': lane
         }
         
     return clear_stats
