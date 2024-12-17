@@ -33,13 +33,16 @@ def start_scrapping(url) -> None:
         game_link = stats.find('div', 
                           class_='r-match-result').find('a',
                                                         class_=['won', 'lost']).get('href')
+        date = stats.find('div',
+                          class_='r-match-result').find('time').text
     
         clear_stats[game_link] = {
             'hero': hero,
             'kda': kda,
             'game_mode': game_mode,
             'lvl': lvl,
-            'match_result': match_result
+            'match_result': match_result,
+            'date': date
         }
         
     return clear_stats
