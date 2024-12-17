@@ -50,6 +50,7 @@ def start_scrapping(url) -> None:
             .find("i", "lane-icon")
             .get("title")
         )
+
         duration = stats.find("div", class_="r-duration").find("div", "r-body").text
 
         clear_stats[game_link] = {
