@@ -9,7 +9,8 @@ st_useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1
 headers = {"Accept": st_accept, "User-Agent": st_useragent}
 
 
-def start_scrapping(url) -> None:
+def start_scrapping(id) -> int:
+    url = f"https://ru.dotabuff.com/players/{id}"
     req = requests.get(url, headers=headers)
 
     # считываем текст HTML-документа
@@ -70,5 +71,5 @@ def start_scrapping(url) -> None:
 
 
 if __name__ == "__main__":  # бест-практис... ю ноу?
-    url = "https://ru.dotabuff.com/players/249237243"
-    print(start_scrapping(url=url))
+    id = 249237243
+    print(start_scrapping(id=id))
