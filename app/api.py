@@ -6,12 +6,12 @@ from typing import Optional
 app = FastAPI()
 
 
-@app.get("/profile")  # путь апи
-def profile_games(url: Optional[str] = None):
-    if url is None:
-        return "Variable 'URL' is empty."
+@app.get("api/profile")  # путь апи
+def profile_games(id: Optional[str] = None):
+    if id is None:
+        return "Variable 'id' is empty."
     else:
         try:
-            return main.start_scrapping(url=url)
+            return main.start_scrapping(id=id)
         except:
             return "500, Check your URL."
