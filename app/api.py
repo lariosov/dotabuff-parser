@@ -1,5 +1,5 @@
 # основные импорты
-import main
+import app.main as main
 import logging
 from fastapi import FastAPI, HTTPException
 from typing import Optional
