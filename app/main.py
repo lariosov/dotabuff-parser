@@ -41,16 +41,21 @@ def start_scrapping(id) -> int:
         )
         date = stats.find("div", class_="r-match-result").find("time").text
         avg_rate = stats.find("div", class_="subtext").text
-        role = (
-            stats.find("span", class_="subtext icons")
-            .find("i", "role-icon")
-            .get("title")
-        )
-        lane = (
-            stats.find("span", class_="subtext icons")
-            .find("i", "lane-icon")
-            .get("title")
-        )
+        
+        try:
+            role = (
+                stats.find("span", class_="subtext icons")
+                .find("i", "role-icon")
+                .get("title")
+            )
+            lane = (
+                stats.find("span", class_="subtext icons")
+                .find("i", "lane-icon")
+                .get("title")
+            )
+        except:
+            role = "Нет информации"
+            lane = "Нет информации"
 
         duration = stats.find("div", class_="r-duration").find("div", "r-body").text
 
@@ -71,5 +76,4 @@ def start_scrapping(id) -> int:
 
 
 if __name__ == "__main__":  # бест-практис... ю ноу?
-    id = 249237243
-    print(start_scrapping(id=id))
+    print(start_scrapping(id=291811014))
