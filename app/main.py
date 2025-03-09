@@ -20,29 +20,28 @@ def start_scrapping(id) -> int:
     clear_stats = {}
 
     for stats in games:
-        hero = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
-        kda = stats.find("span", class_="kda-record").text
-        lvl = stats.find("div", class_="tw-rounded-tl-sm").text
-        match_result = (
+        try:
+            hero = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
+            kda = stats.find("span", class_="kda-record").text
+            lvl = stats.find("div", class_="tw-rounded-tl-sm").text
+            match_result = (
             stats.find("div", class_="r-match-result")
             .find("a", class_=["won", "lost"])
             .text
-        )
-        game_mode = (
+            )
+            game_mode = (
             stats.find("div", class_="r-first")
             .find("div", class_="r-body")
             .find("div", class_="subtext")
             .text
-        )
-        game_link = (
+            )
+            game_link = (
             stats.find("div", class_="r-match-result")
             .find("a", class_=["won", "lost"])
             .get("href")
-        )
-        date = stats.find("div", class_="r-match-result").find("time").text
-        avg_rate = stats.find("div", class_="subtext").text
-        
-        try:
+            )
+            date = stats.find("div", class_="r-match-result").find("time").text
+            avg_rate = stats.find("div", class_="subtext").text
             role = (
                 stats.find("span", class_="subtext icons")
                 .find("i", "role-icon")
@@ -53,11 +52,10 @@ def start_scrapping(id) -> int:
                 .find("i", "lane-icon")
                 .get("title")
             )
+            duration = stats.find("div", class_="r-duration").find("div", "r-body").text
         except:
             role = "Нет информации"
             lane = "Нет информации"
-
-        duration = stats.find("div", class_="r-duration").find("div", "r-body").text
 
         clear_stats[game_link] = {
             "hero": hero,
@@ -76,4 +74,4 @@ def start_scrapping(id) -> int:
 
 
 if __name__ == "__main__":  # бест-практис... ю ноу?
-    print(start_scrapping(id=291811014))
+    print(start_scrapping(id=249237243))
