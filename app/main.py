@@ -53,6 +53,13 @@ def start_scrapping(id) -> int:
                 .get("title")
             )
             duration = stats.find("div", class_="r-duration").find("div", "r-body").text
+            in_game_stats_row = in_game_stats(id=id, game_link=game_link)[game_link]
+            net_worth = in_game_stats_row['net_worth'] 
+            last_hits = in_game_stats_row['last_hits']
+            denied = in_game_stats_row['denied']
+            damage = in_game_stats_row['damage']
+            tower_dmg = in_game_stats_row['tower_dmg']
+
         except:
             role = "Нет информации"
             lane = "Нет информации"
@@ -68,9 +75,59 @@ def start_scrapping(id) -> int:
             "role": role,
             "lane": lane,
             "duration": duration,
+            "net_worth": net_worth,
+            "last_hits": last_hits,
+            "denied": denied,
+            "damage": damage,
+            "tower_dmg": tower_dmg,
         }
 
     return clear_stats
+
+
+def in_game_stats(id, game_link):
+    url = f"https://ru.dotabuff.com{game_link}"
+    r = requests.get(url, headers=headers)
+
+    game_stats = {}
+
+    # считываем текст HTML-документа
+    soup = BeautifulSoup(r.text, "lxml")  # достали последние игры
+    hero_stats = soup.find("tr", class_=f"player-{id}")
+    try:
+        net_worth = hero_stats.find("td",
+                        class_="color-stat-gold").text
+        last_hits = (hero_stats
+                    .find("td",
+                    class_="tf-r r-tab r-group-2 cell-minor")
+                    .text
+                    )
+        denied = (hero_stats
+                  .find("td",
+                        class_="tf-pl r-tab r-group-2 cell-minor")
+                        .text
+                )
+        damage = (hero_stats
+                  .find("td",
+                  class_="tf-r r-tab r-group-3 cell-minor")
+                  .text
+                  )
+        tower_dmg = (hero_stats
+                     .find_all("td",
+                           class_="tf-r r-tab r-group-3 cell-minor")[2].text
+                    )
+    except:
+        net_worth = 'Нет информации'
+
+    game_stats[game_link] = {
+        "net_worth": net_worth,
+        "last_hits": last_hits,
+        "denied": denied,
+        "damage": damage,
+        "tower_dmg": tower_dmg,
+    }
+
+    return game_stats
 
 
 if __name__ == "__main__":  # бест-практис... ю ноу?
