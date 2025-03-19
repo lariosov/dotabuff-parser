@@ -21,7 +21,10 @@ def start_scrapping(id) -> int:
 
     for stats in games:
         try:
-            hero = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
+            hero = (stats.find_next("div", class_="r-body")
+                    .find("a").find("img", class_="tw-w-auto")
+                    .get("alt"))
+            talents = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
             kda = stats.find("span", class_="kda-record").text
             lvl = stats.find("div", class_="tw-rounded-tl-sm").text
             match_result = (
@@ -31,14 +34,14 @@ def start_scrapping(id) -> int:
             )
             game_mode = (
             stats.find("div", class_="r-first")
-            .find("div", class_="r-body")
-            .find("div", class_="subtext")
-            .text
+                .find("div", class_="r-body")
+                .find("div", class_="subtext")
+                .text
             )
             game_link = (
             stats.find("div", class_="r-match-result")
-            .find("a", class_=["won", "lost"])
-            .get("href")
+                .find("a", class_=["won", "lost"])
+                .get("href")
             )
             date = stats.find("div", class_="r-match-result").find("time").text
             avg_rate = stats.find("div", class_="subtext").text
@@ -59,6 +62,7 @@ def start_scrapping(id) -> int:
 
         clear_stats[game_link] = {
             "hero": hero,
+            "talents": talents,
             "kda": kda,
             "game_mode": game_mode,
             "lvl": lvl,
