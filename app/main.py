@@ -57,6 +57,7 @@ def start_scrapping(id) -> int:
             )
             duration = stats.find("div", class_="r-duration").find("div", "r-body").text
         except:
+            duration = "Нет информации"
             role = "Нет информации"
             lane = "Нет информации"
 
