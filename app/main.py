@@ -20,7 +20,10 @@ def start_scrapping(id) -> int:
     clear_stats = {}
 
     for stats in games:
-        hero = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
+        hero = (stats.find_next("div", class_="r-body")
+                .find("a").find("img", class_="tw-w-auto")
+                .get("alt"))
+        talents = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
         kda = stats.find("span", class_="kda-record").text
         lvl = stats.find("div", class_="tw-rounded-tl-sm").text
         match_result = (
@@ -62,6 +65,7 @@ def start_scrapping(id) -> int:
 
         clear_stats[game_link] = {
             "hero": hero,
+            "talents": talents,
             "kda": kda,
             "game_mode": game_mode,
             "lvl": lvl,
@@ -77,4 +81,4 @@ def start_scrapping(id) -> int:
 
 
 if __name__ == "__main__":  # бест-практис... ю ноу?
-    print(start_scrapping(id=291811014))
+    print(start_scrapping(id=249237243))
