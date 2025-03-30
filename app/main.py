@@ -54,6 +54,7 @@ def start_scrapping(id) -> int:
                 .get("title")
             )
         except:
+            duration = "Нет информации"
             role = "Нет информации"
             lane = "Нет информации"
 
