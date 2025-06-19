@@ -21,7 +21,10 @@ def start_scrapping(id) -> int:
 
     for stats in games:
         try:
-            hero = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
+            hero = (stats.find_next("div", class_="r-body")
+                    .find("a").find("img", class_="tw-w-auto")
+                    .get("alt"))
+            talents = stats.find("div", class_="r-fluid").find("a").find("img").get("alt")
             kda = stats.find("span", class_="kda-record").text
             lvl = stats.find("div", class_="tw-rounded-tl-sm").text
             match_result = (
@@ -31,14 +34,14 @@ def start_scrapping(id) -> int:
             )
             game_mode = (
             stats.find("div", class_="r-first")
-            .find("div", class_="r-body")
-            .find("div", class_="subtext")
-            .text
+                .find("div", class_="r-body")
+                .find("div", class_="subtext")
+                .text
             )
             game_link = (
             stats.find("div", class_="r-match-result")
-            .find("a", class_=["won", "lost"])
-            .get("href")
+                .find("a", class_=["won", "lost"])
+                .get("href")
             )
             date = stats.find("div", class_="r-match-result").find("time").text
             avg_rate = stats.find("div", class_="subtext").text
@@ -53,43 +56,14 @@ def start_scrapping(id) -> int:
                 .get("title")
             )
             duration = stats.find("div", class_="r-duration").find("div", "r-body").text
-
-            url = f"https://ru.dotabuff.com{game_link}"
-            r = requests.get(url, headers=headers)
-
-            # считываем текст HTML-документа
-            soup = BeautifulSoup(r.text, "lxml")  # достали последние игры
-            hero_stats = soup.find("tr", class_=f"player-{id}")
-
-            net_worth = hero_stats.find("td",
-                            class_="color-stat-gold").text
-            last_hits = (hero_stats
-                        .find("td",
-                        class_="tf-r r-tab r-group-2 cell-minor")
-                        .text
-                        )
-            denied = (hero_stats
-                      .find("td",
-                            class_="tf-pl r-tab r-group-2 cell-minor")
-                            .text
-                    )
-            damage = (hero_stats
-                      .find("td",
-                      class_="tf-r r-tab r-group-3 cell-minor")
-                      .text
-                      )
-            tower_dmg = (hero_stats
-                     .find_all("td",
-                           class_="tf-r r-tab r-group-3 cell-minor")[2].text
-                    )
-
         except:
+            duration = "Нет информации"
             role = "Нет информации"
             lane = "Нет информации"
-            net_worth = "Нет информации"
 
         clear_stats[game_link] = {
             "hero": hero,
+            "talents": talents,
             "kda": kda,
             "game_mode": game_mode,
             "lvl": lvl,
@@ -99,11 +73,6 @@ def start_scrapping(id) -> int:
             "role": role,
             "lane": lane,
             "duration": duration,
-            "net_worth": net_worth,
-            "last_hits": last_hits,
-            "denied": denied,
-            "damage": damage,
-            "tower_dmg": tower_dmg,
         }
 
     return clear_stats
