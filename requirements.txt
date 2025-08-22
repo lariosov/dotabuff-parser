@@ -3,3 +3,5 @@ requests
 bs4
 fastapi[all]
 prometheus_client
+python-dotenv==1.1.0
+cloudscraper

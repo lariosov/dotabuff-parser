@@ -1,17 +1,13 @@
 # основные импорты
 import requests
+import cloudscraper
 from bs4 import BeautifulSoup
-
-st_accept = "text/html"
-st_useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15"
-
-# формируем хеш заголовков
-headers = {"Accept": st_accept, "User-Agent": st_useragent}
 
 
 def start_scrapping(id) -> int:
     url = f"https://ru.dotabuff.com/players/{id}"
-    req = requests.get(url, headers=headers)
+    scraper = cloudscraper.create_scraper()
+    req = scraper.get(url=url, timeout=30)
 
     # считываем текст HTML-документа
     soup = BeautifulSoup(req.text, "lxml")  # достали последние игры
